@@ -1,8 +1,11 @@
-const puppeteer = require("puppeteer");
+import puppeteer from "puppeteer";
+import db from "./db/connection.js";
+// import { ObjectId } from "mongodb";
+
 
 (async () => {
   const url =
-    "https://www.trendyol.com/aymini-kids/kiz-cocuk-canli-baski-cantali-kot-jile-p-823948790/yorumlar";
+    "https://www.trendyol.com/mila-aydinlatma/donence-modern-tekli-beyaz-sarkit-led-beyaz-power-ledli-salon-mutfak-oda-hol-ledli-avize-p-896922696/yorumlar?boutiqueId=61&merchantId=807138";
 
   const browser = await puppeteer.launch({ headless: false }); 
   const page = await browser.newPage();
@@ -21,7 +24,19 @@ const puppeteer = require("puppeteer");
     ).map((el) => el.innerText.trim());
   });
 
-  console.log(reviews); 
+  console.log("Yorumlar:", reviews);
+
+
+  try {
+    const collection = db.collection("records"); 
+    
+    const insertResult = await collection.insertMany(
+      reviews.map((review) => ({ text: review })) 
+    );
+    console.log(`${insertResult.insertedCount} yorum başarıyla eklendi!`);
+  } catch (err) {
+    console.error("MongoDB'ye eklerken bir hata oluştu:", err);
+  }
 
   await browser.close();
 })();
