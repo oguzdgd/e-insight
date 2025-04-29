@@ -20,6 +20,4 @@ try {
   console.error(err);
 }
 
-let db = client.db("comments");
-
-export default db;
+export { client };
