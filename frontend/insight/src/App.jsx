@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom"
-import AnalyzerPage from './pages/AnalyzerPage';
+import AnalyzerPage from './pages/AnalyzerPage/AnalyzerPage.jsx';
 import Layout from './Layout';
 
 function App() {

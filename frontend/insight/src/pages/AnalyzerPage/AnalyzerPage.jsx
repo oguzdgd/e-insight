@@ -1,5 +1,10 @@
 import axios from 'axios';
 import { useState } from 'react';
+import CommentList from '../../components/Analyzer/CommentList/CommentList';
+import AnalysisResult from '../../components/Analyzer/AnalysisResult/AnalysisResult';
+import InputForm from '../../components/Analyzer/InputForm/InputForm';
+import styles from '../AnalyzerPage/AnalyzerPage.module.scss'
+
 
 const AnalyzerPage = () => {
     const [url, setUrl] = useState('');
@@ -46,44 +51,17 @@ const AnalyzerPage = () => {
     };
   
     return (
-      <div style={{ padding: 20 }}>
-        <h1>🧠 E-Insight: Ürün Yorum Analizi</h1>
+      <div >
+        <h1 className={styles.pageTitle}>Ürün Yorum Analizi</h1>
   
-        <div>
-          <input
-            type="text"
-            value={url}
-            placeholder="Ürün linkini girin (ör. Trendyol)"
-            onChange={(e) => setUrl(e.target.value)}
-            style={{ width: '70%', padding: 8 }}
-          />
-          <button onClick={handleScrape} disabled={loading} style={{ marginLeft: 10, padding: 8 }}>
-            {loading ? 'Yükleniyor...' : 'Yorumları Çek'}
-          </button>
-        </div>
+       <InputForm onSubmit={handleScrape}  url={url} onChange={setUrl} loading={loading}/>
   
         {step >= 2 && (
-          <div style={{ marginTop: 30 }}>
-            <h2>📋 Yorumlar ({comments.length}):</h2>
-            <ul>
-              {comments.map((c, i) => (
-                <li key={i}>{c.text}</li>
-              ))}
-            </ul>
-  
-            <button onClick={handleAnalyze} disabled={loading} style={{ marginTop: 20, padding: 10 }}>
-              {loading ? 'Analiz Ediliyor...' : 'Yorumları Analiz Et'}
-            </button>
-          </div>
+          <CommentList  comments={comments}  onAnalyze={handleAnalyze} loading={loading}/>
         )}
   
         {step === 3 && analysis && (
-          <div style={{ marginTop: 30 }}>
-            <h2>📊 Yapay Zeka Analizi:</h2>
-            <p><strong>Özet:</strong> {analysis.summary}</p>
-            <p><strong>Olumlu Yönler:</strong> {analysis.positives.join(", ")}</p>
-            <p><strong>Olumsuz Yönler:</strong> {analysis.negatives.join(", ")}</p>
-          </div>
+          <AnalysisResult analysis={analysis}/>
         )}
       </div>
     );
