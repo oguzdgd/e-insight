@@ -51,7 +51,7 @@ const AnalyzerPage = () => {
     };
   
     return (
-      <div >
+      <div className={styles.analyzerContainer}>
         <h1 className={styles.pageTitle}>Ürün Yorum Analizi</h1>
   
        <InputForm onSubmit={handleScrape}  url={url} onChange={setUrl} loading={loading}/>

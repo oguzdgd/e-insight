@@ -1,15 +1,16 @@
 import React from 'react'
 import { Button } from '../../atoms/Button'
+import styles from '../InputForm/InputForm.module.scss'
 
 const InputForm = ({url,onSubmit,onChange,loading}) => {
   return (
-    <div>
+    <div className={styles.inputForm}>
     <input
       type="text"
       value={url}
       placeholder="Ürün linkini girin (ör. Trendyol)"
       onChange={(e) => onChange(e.target.value)}
-      style={{ width: '70%', padding: 8 }}
+      className={styles.input} 
     />
     <Button onClick={onSubmit} disabled={loading} style={{ marginLeft: 10, padding: 8 }}>
       {loading ? 'Yükleniyor...' : 'Yorumları Çek'}
