@@ -1,56 +1,67 @@
+$hover-color: #c1ff95;
+
+// Extend Kullanımı(Ben sevdim kullanışlıymış :)
+%link-style {
+  color: azure;
+  text-decoration: none;
+
+  &:hover {
+    color: #c1ff95;
+  }
+}
+
 .navbar {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
-  padding: 0.5rem 1rem;
-  background-color: black;
+  padding: 0.7rem 1rem;
+  background:  linear-gradient(135deg, #291515 0%, #6a399b 100%);
   align-items: center;
-}
-
-.logo {
-  grid-column: 1;
-
-  .logoName{
-    color: azure;
-    text-decoration: none;
-
-    &:hover{
-      color: #ff0000;
-    }
-  }
-}
-
-.navLinks {
-  grid-column: 2;
-  display: flex;
-  gap: 20px;
-
-  a {
-    color: azure;
-    text-decoration: none;
-  }
-}
-
-.activeLink {
-  border-bottom: 1px solid white;
-}
-
-
-@media (max-width: 768px) {
-  .navbar {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto;
-    gap: 10px;
-  }
+  box-shadow: 0 8px 24px 0 rgba(255, 255, 255, 0.1);
+  z-index: 1;
+  position: relative;
+  
 
   .logo {
     grid-column: 1;
-    grid-row: 1;
-    justify-self: center;
+
+    .logoName {
+      @extend %link-style;  
+      font-size: larger;
+
+    }
   }
 
   .navLinks {
-    grid-column: 1;
-    grid-row: 2;
-    justify-self: center;
+    grid-column: 2;
+    display: flex;
+    gap: 20px;
+
+    a {
+        @extend %link-style
+    }
+
+    .activeLink {
+      border-bottom: 1px solid white;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .navbar {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto;
+      gap: 10px;
+    }
+
+    .logo {
+      grid-column: 1;
+      grid-row: 1;
+      justify-self: center;
+    }
+
+    .navLinks {
+      grid-column: 1;
+      grid-row: 2;
+      justify-self: center;
+    }
   }
 }

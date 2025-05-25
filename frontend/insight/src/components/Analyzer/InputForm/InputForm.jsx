@@ -12,7 +12,7 @@ const InputForm = ({url,onSubmit,onChange,loading}) => {
       onChange={(e) => onChange(e.target.value)}
       className={styles.input} 
     />
-    <Button onClick={onSubmit} disabled={loading} style={{ marginLeft: 10, padding: 8 }}>
+    <Button onClick={onSubmit} disabled={loading} className={styles.button}>
       {loading ? 'Yükleniyor...' : 'Yorumları Çek'}
     </Button>
   </div>
