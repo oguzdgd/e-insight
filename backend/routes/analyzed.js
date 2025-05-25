@@ -11,13 +11,16 @@ const router = express.Router();
 router.post("/:platform/:productId", async (req, res) => {
   try {
     const { platform, productId } = req.params;
-    const { reviews }            = req.body;
+    const { reviews, customPrompt } = req.body;
+    console.log("req.body:", req.body);
+    console.log("customPrompt inside route:", req.body.customPrompt);
+
 
     if (!Array.isArray(reviews) || !reviews.length) {
       return res.status(400).send("reviews array must be provided");
     }
 
-    const analysis = await processAndSaveAnalysis(platform, productId, reviews);
+    const analysis = await processAndSaveAnalysis(platform, productId, reviews, customPrompt);
     res.status(200).json(analysis);
   } catch (err) {
     console.error("Analiz hatası:", err);
@@ -29,7 +32,7 @@ router.post("/:platform/:productId", async (req, res) => {
 router.get("/:platform/:productId", async (req, res) => {
   try {
     const { platform, productId } = req.params;
-    const result                  = await getAnalysis(platform, productId);
+    const result = await getAnalysis(platform, productId);
 
     if (!result) {
       return res.status(404).send("Analiz bulunamadı");
