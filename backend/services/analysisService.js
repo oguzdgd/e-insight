@@ -1,5 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
 import { client } from "../db/connection.js";
+import { parseProductInfoFromUrl } from "../utils/parseProductInfoFromUrl.js";
 
 const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY
@@ -33,10 +34,12 @@ export async function analyzeReviewsWithGemini(reviews, customPrompt = null) {
       ${reviews.map((r, i) => `${i + 1}. ${r}`).join("\n")}
       
       Ürünün yorumlarına ve kullanıcının girdiği prompta göre bir analiz yap.
-        1) "summary": Cümleye merhaba ile başla
+        1) "summary": yorumlarla ilgili özet çıkarım,
         2) "positives": en iyi 3 olumlu noktanın dizisi,
         3) "negatives": en iyi 3 olumsuz noktanın dizisi.
+        4) "point": Kullanıcının bu ürünü alıp almaması için 10 üzerinden bir puan verin. 
 
+      
 
       YALNIZCA geçerli JSON ile yanıt verin.
     `
@@ -74,10 +77,20 @@ export async function saveAnalysis(platform, productId, analysis) {
 }
 
 
-export async function processAndSaveAnalysis(platform, productId, reviews, customPrompt = null) {
+export async function processAndSaveAnalysis(productUrl, reviews, customPrompt = null) {
+
+  const {productName,productId,platform} = parseProductInfoFromUrl(productUrl)
+
+    if (productId === "unknown" || platform === "unknown") {
+    throw new Error("Linkten ürün bilgileri çıkarılamadı.");
+  }
 
   const analysis = await analyzeReviewsWithGemini(reviews, customPrompt);
-  await saveAnalysis(platform, productId, analysis);
+  await saveAnalysis(platform, productId, {
+    ...analysis,
+    productName,
+    productUrl
+  });
   return analysis;
 }
 

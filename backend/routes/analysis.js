@@ -1,4 +1,3 @@
-// backend/routes/analyzed.js
 import express from "express";
 import {
   processAndSaveAnalysis,
@@ -10,17 +9,16 @@ const router = express.Router();
 
 router.post("/:platform/:productId", async (req, res) => {
   try {
-    const { platform, productId } = req.params;
-    const { reviews, customPrompt } = req.body;
+    const { productUrl,reviews, customPrompt } = req.body;
     console.log("req.body:", req.body);
     console.log("customPrompt inside route:", req.body.customPrompt);
 
 
-    if (!Array.isArray(reviews) || !reviews.length) {
-      return res.status(400).send("reviews array must be provided");
+    if (!productUrl || !Array.isArray(reviews) || !reviews.length) {
+      return res.status(400).send("productUrl ve reviews gereklidir.");
     }
 
-    const analysis = await processAndSaveAnalysis(platform, productId, reviews, customPrompt);
+    const analysis = await processAndSaveAnalysis(productUrl, reviews, customPrompt);
     res.status(200).json(analysis);
   } catch (err) {
     console.error("Analiz hatası:", err);

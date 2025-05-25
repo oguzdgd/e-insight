@@ -41,6 +41,7 @@ const AnalyzerPage = () => {
       const response = await axios.post(`http://localhost:5050/analyzed/trendyol/${productId}`, {
         reviews: reviewTexts,
         customPrompt: customPrompt,
+        productUrl:url
       });
       setAnalysis(response.data);
       setStep(3);
