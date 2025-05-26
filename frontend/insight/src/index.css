@@ -5,7 +5,8 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+ --bg-color:white;
+ --text-color:black;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -19,7 +20,27 @@
   box-sizing: border-box;
 }
 
+
+[data-theme="user"] {
+  --bg-color: #bdbdbd;
+  --text-color: #000000;
+  --navbar-bg: linear-gradient(135deg, #291515 0%, #6a399b 100%);
+  --navbar-text: #f6f6f6;
+}
+
+
+[data-theme="seller"] {
+  --bg-color: #242424;
+  --text-color: #e0e1dd;
+   --navbar-bg: linear-gradient(135deg, #fff200 0%,  #cac121 50%,  #5c5402 100%);
+  --navbar-text: #000000;
+}
+
+
 body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: all 0.3s ease;
 
   min-width: 320px;
   min-height: 100vh;
