@@ -1,0 +1,80 @@
+.analysisContainer {
+  margin: 2rem 0;
+  padding: 1rem;
+  color: black;
+}
+
+.title {
+  font-size: 2rem;
+  color: brown;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+}
+
+.section {
+  margin-bottom: 2rem;
+
+  h3 {
+    color: #34495e;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+
+    li {
+      margin: 0.5rem 0;
+      padding: 0.5rem;
+      background: #bababa;
+      border-radius: 6px;
+
+      &:hover {
+        background: #0381fe;
+        color: white;
+      }
+    }
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin: 2rem 0;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.score {
+  text-align: center;
+  padding: 2rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+
+  .scoreValue {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #2ecc71;
+  }
+}
+
+.sellerInfo {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+}

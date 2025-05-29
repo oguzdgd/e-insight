@@ -4,6 +4,7 @@ import CommentList from '../../components/Analyzer/CommentList/CommentList';
 import AnalysisResult from '../../components/Analyzer/AnalysisResult/AnalysisResult';
 import InputForm from '../../components/Analyzer/InputForm/InputForm';
 import styles from '../AnalyzerPage/AnalyzerPage.module.scss'
+import useModeStore from '../../stores/modeStore';
 
 
 const AnalyzerPage = () => {
@@ -14,6 +15,7 @@ const AnalyzerPage = () => {
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState(1); // 1: link gir, 2: yorumlar geldi, 3: analiz tamam
   const [customPrompt, setCustomPrompt] = useState('');
+  const { mode } = useModeStore();
 
   const handleScrape = async () => {
     setLoading(true);
@@ -38,10 +40,12 @@ const AnalyzerPage = () => {
     setLoading(true);
     try {
       const reviewTexts = comments.map((c) => c.text);
-      const response = await axios.post(`http://localhost:5050/analyzed/trendyol/${productId}`, {
+      const response = await axios.post(`http://localhost:5050/analysis/trendyol/${productId}`, {
         reviews: reviewTexts,
+        mode,
         customPrompt: customPrompt,
-        productUrl:url
+        productUrl: url,
+      
       });
       setAnalysis(response.data);
       setStep(3);
