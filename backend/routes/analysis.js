@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.post("/:platform/:productId", async (req, res) => {
   try {
-    const { productUrl,reviews, customPrompt } = req.body;
+    const { productUrl,reviews,mode, customPrompt } = req.body;
     console.log("req.body:", req.body);
     console.log("customPrompt inside route:", req.body.customPrompt);
 
@@ -17,8 +17,12 @@ router.post("/:platform/:productId", async (req, res) => {
     if (!productUrl || !Array.isArray(reviews) || !reviews.length) {
       return res.status(400).send("productUrl ve reviews gereklidir.");
     }
+    
+    if (!mode) {
+      return res.status(400).json({ error: 'Mode belirtilmedi' });
+    }
 
-    const analysis = await processAndSaveAnalysis(productUrl, reviews, customPrompt);
+    const analysis = await processAndSaveAnalysis(productUrl, reviews,mode, customPrompt);
     res.status(200).json(analysis);
   } catch (err) {
     console.error("Analiz hatası:", err);
