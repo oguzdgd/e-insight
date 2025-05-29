@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import CommentList from '../../components/Analyzer/CommentList/CommentList';
 import AnalysisResult from '../../components/Analyzer/AnalysisResult/AnalysisResult';
 import InputForm from '../../components/Analyzer/InputForm/InputForm';
@@ -16,6 +16,15 @@ const AnalyzerPage = () => {
   const [step, setStep] = useState(1); // 1: link gir, 2: yorumlar geldi, 3: analiz tamam
   const [customPrompt, setCustomPrompt] = useState('');
   const { mode } = useModeStore();
+
+  // Mod değiştiğinde analiz sonuçlarını sıfırlar
+  useEffect(() => {
+    // Eğer bir analiz sonucu varsa resetle yoksa resetleme
+    if (analysis) {
+      setAnalysis(null);
+      setStep(2); // 2.adıma geri dön
+    }
+  }, [mode]);
 
   const handleScrape = async () => {
     setLoading(true);

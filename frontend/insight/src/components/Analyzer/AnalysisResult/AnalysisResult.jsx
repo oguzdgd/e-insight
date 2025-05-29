@@ -4,6 +4,8 @@ import styles from './AnalysisResult.module.scss'
 const AnalysisResult = ({ analysis }) => {
   const { mode } = useModeStore();
 
+  if (!analysis) return null;
+
   return (
     <div className={styles.analysisContainer}>
       <h2 className={styles.title}>📊 Yapay Zeka Analizi</h2>
@@ -18,18 +20,18 @@ const AnalysisResult = ({ analysis }) => {
           <div className={styles.section}>
             <h3>✅ Olumlu Yönler</h3>
             <ul>
-              {analysis.positives.map((point, index) => (
+              {analysis.positives?.map((point, index) => (
                 <li key={index}>{point}</li>
-              ))}
+              )) || <li>Olumlu yönler bulunamadı</li>}
             </ul>
           </div>
 
           <div className={styles.section}>
             <h3>❌ Olumsuz Yönler</h3>
             <ul>
-              {analysis.negatives.map((point, index) => (
+              {analysis.negatives?.map((point, index) => (
                 <li key={index}>{point}</li>
-              ))}
+              )) || <li>Olumsuz yönler bulunamadı</li>}
             </ul>
           </div>
         </div>
@@ -37,21 +39,21 @@ const AnalysisResult = ({ analysis }) => {
         {mode === "user" ? (
           <div className={styles.score}>
             <h3>🎯 Ürün Puanı</h3>
-            <div className={styles.scoreValue}>{analysis.point}/10</div>
+            <div className={styles.scoreValue}>{analysis.point || '?'}/10</div>
           </div>
         ) : (
           <div className={styles.sellerInfo}>
             <div className={styles.section}>
               <h3>💡 Öneriler</h3>
               <ul>
-                {analysis.recommendations.map((rec, index) => (
+                {analysis.recommendations?.map((rec, index) => (
                   <li key={index}>{rec}</li>
-                ))}
+                )) || <li>Öneriler bulunamadı</li>}
               </ul>
             </div>
             <div className={styles.section}>
               <h3>📈 Rekabet Analizi</h3>
-              <p>{analysis.competitiveAnalysis}</p>
+              <p>{analysis.competitiveAnalysis || 'Rekabet analizi bulunamadı'}</p>
             </div>
           </div>
         )}
