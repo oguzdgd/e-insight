@@ -5,9 +5,11 @@ export async function scrapeComments(url) {
   let browser;
   try {
     browser = await puppeteer.launch({
+      executablePath: '/usr/bin/chromium-browser',
       headless: true,
       args: [
         "--start-maximized",
+        '--no-sandbox', '--disable-setuid-sandbox'
         // "--disable-notifications", // Bildirimleri devre dışı bırakmak için bu satırı aktif edebilirsiniz.Bu olmadan da sorunsuz çalışıyor. Sorun olursa açabilirsiniz.
       ],
       defaultViewport: null,
@@ -43,11 +45,11 @@ export async function scrapeComments(url) {
         if (element) {
           const boundingBox = await element.boundingBox();
           if (boundingBox && boundingBox.width > 0 && boundingBox.height > 0) {
-             await element.click();
-             console.log(`Çerez onay butonu tıklandı (seçici: ${selector})`);
-             await new Promise((resolve) => setTimeout(resolve, 1500));
-             cookiesAccepted = true;
-             break;
+            await element.click();
+            console.log(`Çerez onay butonu tıklandı (seçici: ${selector})`);
+            await new Promise((resolve) => setTimeout(resolve, 1500));
+            cookiesAccepted = true;
+            break;
           }
         }
       }
@@ -129,11 +131,11 @@ export async function scrapeComments(url) {
       const currentElements = await page.$$(".comment-text");
       const currentCommentCountOnPage = currentElements.length;
 
-   console.log(
+      console.log(
         `Kaydırma denemesi ${scrollAttempts}: Sayfada ${currentCommentCountOnPage} yorum elementi var. (Hedef: ${totalCommentCount > 0 ? totalCommentCount : "bilinmiyor"}, Limit: ${MAX_COMMENTS_TO_SCRAPE})`
       );
 
-            if (currentCommentCountOnPage >= MAX_COMMENTS_TO_SCRAPE) {
+      if (currentCommentCountOnPage >= MAX_COMMENTS_TO_SCRAPE) {
         console.log(`${currentCommentCountOnPage} element yüklendi, belirlenen maksimum yorum limiti (${MAX_COMMENTS_TO_SCRAPE}) ulaşıldı veya aşıldı.`);
         break; // Eğer belirlenen limite ulaşılırsa döngüyü sonlandır
       }
@@ -166,12 +168,12 @@ export async function scrapeComments(url) {
           console.log(`${SCROLL_UP_AMOUNT_IF_STUCK}px yukarı kaydırıldı. Kaydırmaya devam ediliyor.`);
           stagnantScrolls = 0; // Durağan kaydırma sayacını sıfırla, yeni bir şans ver
         } else if (stagnantScrolls >= MAX_STAGNANT_SCROLLS) {
-            // Maksimum durağan kaydırmaya ulaşıldıysa
-            if (isAtBottom && !(totalCommentCount > 0 && currentCommentCountOnPage >= totalCommentCount)) {
-                 console.log("Sayfa sonuna ulaşıldı, maksimum durağan kaydırma ve maksimum yukarı kaydırma denemesine ulaşıldı. Tüm yorumların yüklendiği varsayılıyor.");
-            } else if (stagnantScrolls >= MAX_STAGNANT_SCROLLS) {
-                 console.log("Sayfanın başka bir yerinde maksimum durağan kaydırma sayısına ulaşıldı. Tüm yorumların yüklendiği varsayılıyor.");
-            }
+          // Maksimum durağan kaydırmaya ulaşıldıysa
+          if (isAtBottom && !(totalCommentCount > 0 && currentCommentCountOnPage >= totalCommentCount)) {
+            console.log("Sayfa sonuna ulaşıldı, maksimum durağan kaydırma ve maksimum yukarı kaydırma denemesine ulaşıldı. Tüm yorumların yüklendiği varsayılıyor.");
+          } else if (stagnantScrolls >= MAX_STAGNANT_SCROLLS) {
+            console.log("Sayfanın başka bir yerinde maksimum durağan kaydırma sayısına ulaşıldı. Tüm yorumların yüklendiği varsayılıyor.");
+          }
           break; // Döngüden çık
         }
       } else {
@@ -216,7 +218,7 @@ export async function scrapeComments(url) {
       })),
     };
   } catch (error) {
-    console.error(`Kazıma sırasında bir hata oluştu (${url}):`, error.message); 
+    console.error(`Kazıma sırasında bir hata oluştu (${url}):`, error.message);
     const { productId, productName, platform } = parseProductInfoFromUrl(url); // Hata durumunda da parse etmeyi dene
     return {
       productId: productId || "hata-id",

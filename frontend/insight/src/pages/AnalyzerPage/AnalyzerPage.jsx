@@ -26,15 +26,17 @@ const AnalyzerPage = () => {
     }
   }, [mode]);
 
+  const apiLink = 'https://e-insight-3zczy.ondigitalocean.app'
+
   const handleScrape = async () => {
     setLoading(true);
     try {
-      const response = await axios.post('http://localhost:5050/scrape', { url });
+      const response = await axios.post(`${apiLink}/scrape`, { url });
       const id = response.data.productId;
       setProductId(id);
 
 
-      const commentsRes = await axios.get(`http://localhost:5050/comments/trendyol/${id}`);
+      const commentsRes = await axios.get(`${apiLink}/comments/trendyol/${id}`);
       setComments(commentsRes.data.comments || []);
       setStep(2);
     } catch (error) {
@@ -49,7 +51,7 @@ const AnalyzerPage = () => {
     setLoading(true);
     try {
       const reviewTexts = comments.map((c) => c.text);
-      const response = await axios.post(`http://localhost:5050/analysis/trendyol/${productId}`, {
+      const response = await axios.post(`${apiLink}/analysis/trendyol/${productId}`, {
         reviews: reviewTexts,
         mode,
         customPrompt: customPrompt,
