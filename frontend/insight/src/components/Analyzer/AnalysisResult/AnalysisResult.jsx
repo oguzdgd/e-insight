@@ -39,7 +39,7 @@ const AnalysisResult = ({ analysis }) => {
         {mode === "user" ? (
           <div className={styles.score}>
             <h3>🎯 Ürün Puanı</h3>
-            <div className={styles.scoreValue}>{analysis.point || '?'}/10</div>
+            <div className={styles.scoreValue}>{analysis.point || '?'}</div>
           </div>
         ) : (
           <div className={styles.sellerInfo}>
