@@ -5,11 +5,14 @@ export async function scrapeComments(url) {
   let browser;
   try {
     browser = await puppeteer.launch({
-      executablePath: '/usr/bin/chromium-browser',
+
       headless: true,
       args: [
         "--start-maximized",
-        '--no-sandbox', '--disable-setuid-sandbox'
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage', // Ek argüman
+        '--disable-gpu'
         // "--disable-notifications", // Bildirimleri devre dışı bırakmak için bu satırı aktif edebilirsiniz.Bu olmadan da sorunsuz çalışıyor. Sorun olursa açabilirsiniz.
       ],
       defaultViewport: null,

@@ -7,17 +7,30 @@ const client = new MongoClient(uri, {
     strict: true,
     deprecationErrors: true,
   },
+  maxPoolSize: 10, // Bağlantı havuzu boyutu
+  serverSelectionTimeoutMS: 5000, // Sunucu seçim timeout'u
+  socketTimeoutMS: 45000, // Socket timeout'u
 });
 
-try {
+let isConnected = false;
 
-  await client.connect();
-  await client.db("admin").command({ ping: 1 });
-  console.log(
-   "Pinged your deployment. You successfully connected to MongoDB!"
-  );
-} catch(err) {
-  console.error(err);
+async function connectToDatabase() {
+  if (!isConnected) {
+    try {
+      await client.connect();
+      await client.db("admin").command({ ping: 1 });
+      console.log("Pinged your deployment. You successfully connected to MongoDB!");
+      isConnected = true;
+    } catch(err) {
+      console.error("MongoDB bağlantı hatası:", err);
+      isConnected = false;
+      throw err;
+    }
+  }
+  return client;
 }
 
-export { client };
+
+await connectToDatabase();
+
+export { client, connectToDatabase };

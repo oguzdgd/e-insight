@@ -26,7 +26,10 @@ const AnalyzerPage = () => {
     }
   }, [mode]);
 
-  const apiLink = 'https://e-insight-3zczy.ondigitalocean.app'
+
+  const apiLink = import.meta.env.PROD 
+    ? 'https://e-insight-3zczy.ondigitalocean.app'   
+    : 'http://localhost:5050';  
 
   const handleScrape = async () => {
     setLoading(true);
