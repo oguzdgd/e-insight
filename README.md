@@ -1,6 +1,10 @@
+## README Languages
+- [Türkçe](README.md)
+- [English](README-en.md)
+
 # E-Insight
 
-E-Insight, e-ticaret platformlarındaki ürün yorumlarını analiz ederek hem alıcılar hem de satıcılar için içgörüler sağlayan bir web uygulamasıdır. Kullanıcıların daha bilinçli satın alma kararları vermelerine ve satıcıların müşteri geri bildirimlerini anlamalarına yardımcı olur.
+E-Insight, e-ticaret platformlarındaki ürün yorumlarını analiz ederek hem alıcılar hem de satıcılar için içgörüler sağlayan bir web uygulamasıdır. Kullanıcıların daha bilinçli seçimler yapmasını sağlamak için yapay zeka destekli yorum analizi sunar.
 
 ## Özellikler
 
@@ -38,37 +42,34 @@ E-Insight, e-ticaret platformlarındaki ürün yorumlarını analiz ederek hem a
 
 1. Depoyu klonlayın
 2. Backend bağımlılıklarını yükleyin:
-```bash
-cd backend
-npm install
-```
-
+    ```bash
+    cd backend
+    npm install
+    ```
 3. Frontend bağımlılıklarını yükleyin:
-```bash
-cd frontend/insight
-npm install
-```
-
+    ```bash
+    cd frontend/insight
+    npm install
+    ```
 4. Backend dizininde `backend/config.env` dosyası oluşturun:
-```env
-ATLAS_URI=mongodb_baglanti_stringiniz
-PORT=5050
-GEMINI_API_KEY=gemini_api_anahtariniz
-```
+    ```env
+    ATLAS_URI=mongodb_baglanti_stringiniz
+    PORT=5050
+    GEMINI_API_KEY=gemini_api_anahtariniz
+    ```
 
 ### Uygulamayı Çalıştırma
 
 1. Backend sunucusunu başlatın:
-```bash
-cd backend
-node --env-file=config.env server.js // node.js built-in,  dotenv yükleyip kullanabilirsiniz.
-```
-
+    ```bash
+    cd backend
+    node --env-file=config.env server.js // node.js built-in, dotenv yükleyip kullanabilirsiniz.
+    ```
 2. Frontend geliştirme sunucusunu başlatın:
-```bash
-cd frontend/insight
-npm run dev
-```
+    ```bash
+    cd frontend/insight
+    npm run dev
+    ```
 
 ## Katkıda Bulunma
 
@@ -77,7 +78,6 @@ npm run dev
 3. Değişikliklerinizi commit edin
 4. Dalınıza push yapın
 5. Pull request açın
-
 
 ## Kullanılan Teknojiler
 
