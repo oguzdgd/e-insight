@@ -51,7 +51,7 @@ export async function analyzeReviewsWithGemini(reviews, mode, customPrompt = nul
     : defaultPrompt;
 
   const resp = await ai.models.generateContent({
-    model: "gemini-2.5-flash-preview-05-20",
+    model: "gemini-2.5-flash",
     contents: prompt,
   });
 

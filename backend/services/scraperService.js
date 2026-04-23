@@ -6,14 +6,14 @@ export async function scrapeComments(url) {
   try {
     browser = await puppeteer.launch({
 
-      headless: true,
+      headless: false,
       args: [
         "--start-maximized",
         '--no-sandbox',
         '--disable-setuid-sandbox',
         '--disable-dev-shm-usage', // Ek argüman
-        '--disable-gpu'
-        // "--disable-notifications", // Bildirimleri devre dışı bırakmak için bu satırı aktif edebilirsiniz.Bu olmadan da sorunsuz çalışıyor. Sorun olursa açabilirsiniz.
+        '--disable-gpu',
+        "--disable-notifications", // Bildirimleri devre dışı bırakmak için bu satırı aktif edebilirsiniz.Bu olmadan da sorunsuz çalışıyor. Sorun olursa açabilirsiniz.
       ],
       defaultViewport: null,
     });
@@ -71,7 +71,7 @@ export async function scrapeComments(url) {
 
     // Yorumların yüklenip yüklenmediğini kontrol et
     try {
-      await page.waitForSelector(".comment-text", { timeout: 25000 });
+      await page.waitForSelector(".review-comment", { timeout: 25000 });
       console.log("İlk .comment-text elementi bulundu.");
     } catch (e) {
       console.error("İlk .comment-text elementi yüklenemedi. Sayfada yorum olmayabilir veya seçici hatalı.", e.message);
@@ -131,7 +131,7 @@ export async function scrapeComments(url) {
     // Yorumları yüklemek için kaydırma döngüsü
     while (scrollAttempts < MAX_SCROLL_ITERATIONS) {
       scrollAttempts++;
-      const currentElements = await page.$$(".comment-text");
+      const currentElements = await page.$$(".review-comment");
       const currentCommentCountOnPage = currentElements.length;
 
       console.log(
@@ -201,10 +201,12 @@ export async function scrapeComments(url) {
 
     // Yorum metinlerini çek
     const commentsText = await page.evaluate(() => {
-      return Array.from(document.querySelectorAll(".comment-text")).map((el) =>
-        el.innerText.trim()
-      );
+      return Array.from(document.querySelectorAll("span.review-comment > span"))
+        .map((el) => el.innerText.trim());
     });
+
+    // Eğer boş dönüyorsa alternatif olarak direkt ".review-comment" seçilebilir:
+    //  return Array.from(document.querySelectorAll(".review-comment")).map((el) => el.innerText.trim());
 
     // Benzersiz ve boş olmayan yorumları al
     const uniqueComments = Array.from(new Set(commentsText.filter(text => text.length > 0))); // Boş yorumları filtreleme, ayrıca aynı yorum yazıldıysa Set içine konulduğu için aynı yorumlar bir kez yazılıyor
